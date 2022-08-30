@@ -31,6 +31,6 @@
     (let [uri (:uri request)
           url (string/replace url #"/$" "")]
       (cond
-        (= uri (str url "/")) (redirect (string/replace uri #"/$" ""))
+        (= uri (str url "/")) (redirect url)
         (= uri url) (render-altair options)
         :else (-> request (altair-dist-handler next-handler))))))
