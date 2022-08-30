@@ -1,9 +1,14 @@
 (ns ring.middleware.altair
   "Ring middleware for Altair GraphQL Client"
-  (:require [clojure.string :as string]
+  (:require [camel-snake-kebab.core :as csk]
+            [camel-snake-kebab.extras :as cske]
+            [clojure.string :as string]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.util.response :refer [content-type redirect]]
             [selmer.parser :refer [render-file]]))
+
+(defn- transform-keys->camelCaseKeyword [m]
+  (cske/transform-keys csk/->camelCaseKeyword m))
 
 (defn- svg? [uri]
   (some
@@ -19,9 +24,10 @@
       response)))
 
 (defn- render-altair [options]
-  (let [altair-page (render-file
+  (let [config-options (or (transform-keys->camelCaseKeyword options) {})
+        altair-page (render-file
                      "dist/index.html"
-                     {:config-options (or options {})})]
+                     {:config-options config-options})]
     {:status 200
      :headers {"Content-Type" "text/html"}
      :body altair-page}))
