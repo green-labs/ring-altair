@@ -7,6 +7,6 @@ cp -r package/build/* resources/
 rm -rf package
 
 pattern="<\/body>"
-replacement="  <script>AltairGraphQL.init({{config-options}})<\/script>\n<\/body>"
+replacement="  <script>AltairGraphQL.init({{config-options|safe}})<\/script>\n<\/body>"
 
 sed -i '' -E "s/$pattern/$replacement/g" resources/dist/index.html
