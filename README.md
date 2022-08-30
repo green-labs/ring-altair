@@ -6,5 +6,5 @@ Ring middleware for Altair GraphQL Client.
 
 ```clojure
 green-labs/ring-altair {:git/url "https://github.com/green-labs/ring-altair"
-                        :git/sha "9f4327c0c3330ae7fdd7fa50524a6f3895e6b1a3"}
+                        :git/sha "a75aaaf0b5db8d815778f18043c0812f6634e43e"}
 ```
