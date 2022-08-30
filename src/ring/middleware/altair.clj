@@ -21,7 +21,7 @@
 (defn- render-altair [options]
   (let [config-options (or options {})
         altair-page (render-file
-                     "dist/index.html"
+                     "altair/index.html"
                      {:config-options config-options})]
     {:status 200
      :headers {"Content-Type" "text/html"}
