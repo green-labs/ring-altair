@@ -12,7 +12,7 @@
         (map (partial string/ends-with? uri)))))
 
 (defn- altair-dist-handler [request uri next]
-  (let [response ((wrap-resource next "/dist")
+  (let [response ((wrap-resource next "/altair")
                   (assoc request :uri uri))]
     (if (svg? uri)
       (content-type response "image/svg+xml")
@@ -30,10 +30,8 @@
 (defn wrap-altair [next {:keys [url options]}]
   (fn [request]
     (let [uri (:uri request)
-          sub-url-pattern (re-pattern (str url "(.*)"))
-          matched-sub-url (re-find  sub-url-pattern uri)
-          sub-uri (string/join "/" (rest matched-sub-url))]
+          url (string/replace url #"/$" "")]
       (cond
         (= uri (str url "/")) (redirect (string/replace uri #"/$" ""))
-        (string/blank? sub-uri) (render-altair options)
+        (= uri url) (render-altair options)
         :else (-> request (altair-dist-handler uri next))))))
