@@ -11,4 +11,4 @@ rm -rf package
 pattern="<\/body>"
 replacement="  <script>AltairGraphQL.init({{config-options|json|safe}})<\/script>\n<\/body>"
 
-sed -i '' -E "s/$pattern/$replacement/g" resources/dist/index.html
+sed -i '' -E "s/$pattern/$replacement/g" resources/altair/index.html
