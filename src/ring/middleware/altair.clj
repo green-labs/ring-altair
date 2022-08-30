@@ -24,7 +24,7 @@
       response)))
 
 (defn- render-altair [options]
-  (let [config-options (or (transform-keys->camelCaseKeyword options) {})
+  (let [config-options (or options {})
         altair-page (render-file
                      "dist/index.html"
                      {:config-options config-options})]
