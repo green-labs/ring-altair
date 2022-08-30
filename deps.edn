@@ -1,0 +1,4 @@
+{:paths ["src" "resources" "classes"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.0"}
+        ring/ring-core {:mvn/version "1.7.1"}
+        selmer/selmer {:mvn/version "1.12.53"}}}
