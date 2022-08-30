@@ -6,14 +6,13 @@
             [selmer.parser :refer [render-file]]))
 
 (defn- svg? [uri]
-  (some
-   true?
-   (->> [".svg" ".svgz"]
-        (map (partial string/ends-with? uri)))))
+  (let [uri-ends-with? (partial string/ends-with? uri)]
+    (some true? (->> [".svg" ".svgz"]
+                     (map uri-ends-with?)))))
 
-(defn- altair-dist-handler [request uri next]
-  (let [response ((wrap-resource next "/altair")
-                  (assoc request :uri uri))]
+(defn- altair-dist-handler [request next-handler]
+  (let [uri (:uri request)
+        response ((wrap-resource next-handler "/altair") request)]
     (if (svg? uri)
       (content-type response "image/svg+xml")
       response)))
@@ -27,11 +26,11 @@
      :headers {"Content-Type" "text/html"}
      :body altair-page}))
 
-(defn wrap-altair [next {:keys [url options]}]
+(defn wrap-altair [next-handler {:keys [url options]}]
   (fn [request]
     (let [uri (:uri request)
           url (string/replace url #"/$" "")]
       (cond
         (= uri (str url "/")) (redirect (string/replace uri #"/$" ""))
         (= uri url) (render-altair options)
-        :else (-> request (altair-dist-handler uri next))))))
+        :else (-> request (altair-dist-handler next-handler))))))
