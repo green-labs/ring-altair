@@ -14,6 +14,9 @@ green-labs/ring-altair {:git/url "https://github.com/green-labs/ring-altair"
 [See possible options](https://github.com/altair-graphql/altair/blob/master/packages/altair-core/src/config.ts)
 
 ```clojure
+(ns example
+  (:require [ring.middleware.altair :refer [wrap-altair]]))
+
 (wrap-altair {:url     "/altair"
               :options {:initialName             "My Altair"
                         :endpointURL             "{{API_ENDPOINT}}/graphql"
