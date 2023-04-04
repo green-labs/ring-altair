@@ -1,10 +1,9 @@
 #!/bin/bash
 
-wget -c $(npm view altair-static@5.0.9 dist.tarball) -O - | tar -xz
+wget -c $(npm view altair-static@5.0.21 dist.tarball) -O - | tar -xz
 
-rm -rf resources/dist
-cp -r package/build/* resources/
-mv resources/dist resources/altair
+rm -rf resources/altair
+mv package/build/dist resources/altair
 rm -rf package
 
 
