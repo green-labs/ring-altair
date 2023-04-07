@@ -18,10 +18,12 @@
       response)))
 
 (defn- render-altair [options]
-  (let [config-options (or options {})
+  (let [config-options (or options {:url "/"})
+        base-url (:url config-options)
         altair-page (render-file
                      "altair/index.html"
-                     {:config-options config-options})]
+                     {:base-url (if (string/ends-with? base-url "/") base-url (str base-url "/"))
+                      :config-options config-options})]
     {:status 200
      :headers {"Content-Type" "text/html"}
      :body altair-page}))

@@ -11,7 +11,7 @@ altair_init_replacement="  <script>AltairGraphQL.init({{config-options|json|safe
 
 sed -i '' -E "s/$body_closing_pattern/$altair_init_replacement/g" resources/altair/index.html
 
-base_pattern="    <base href=\"\/\" \/>"
-base_remove_replacement=""
+base_pattern="<base href=\"\/\" \/>"
+base_remove_replacement="<base href=\"{{base-url}}\" \/>"
 
 sed -i '' -E "s/$base_pattern/$base_remove_replacement/g" resources/altair/index.html
