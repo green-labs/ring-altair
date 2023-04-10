@@ -1,21 +1,10 @@
 (ns ring.middleware.altair
   "Ring middleware for Altair GraphQL Client"
   (:require [clojure.string :as string]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.util.response :refer [content-type redirect]]
+            [ring.middleware.resource :refer [resource-request]]
+            [ring.util.response :refer [redirect]]
             [selmer.parser :refer [render-file]]))
 
-(defn- svg? [uri]
-  (let [uri-ends-with? (partial string/ends-with? uri)]
-    (some true? (->> [".svg" ".svgz"]
-                     (map uri-ends-with?)))))
-
-(defn- altair-dist-handler [request next-handler]
-  (let [uri (:uri request)
-        response ((wrap-resource next-handler "/altair") request)]
-    (if (svg? uri)
-      (content-type response "image/svg+xml")
-      response)))
 
 (defn- render-altair [options]
   (let [config-options (or options {:url "/"})
@@ -28,11 +17,17 @@
      :headers {"Content-Type" "text/html"}
      :body altair-page}))
 
-(defn wrap-altair [next-handler {:keys [url options]}]
+(defn altair-request [request {:keys [url options]}]
+  (let [uri (:uri request)]
+    (if (= uri url)
+      (render-altair options)
+      (let [root-path (string/replace-first uri #(re-pattern url) "")]
+        (resource-request (assoc request :uri root-path) "/altair")))))
+
+(defn wrap-altair [_next-handler {:keys [url options]}]
   (fn [request]
     (let [uri (:uri request)
           url (string/replace url #"/$" "")]
       (cond
         (= uri (str url "/")) (redirect url)
-        (= uri url) (render-altair options)
-        :else (-> request (altair-dist-handler next-handler))))))
+        :else (altair-request request options)))))
