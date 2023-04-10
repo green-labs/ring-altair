@@ -17,15 +17,15 @@ green-labs/ring-altair {:git/url "https://github.com/green-labs/ring-altair"
 (ns example
   (:require [ring.middleware.altair :refer [wrap-altair]]))
 
-(wrap-altair {:url     "/altair"
-              :options {:initialName             "My Altair"
-                        :endpointURL             "{{API_ENDPOINT}}/graphql"
-                        :initialHeaders          {:Authorization "Bearer {{accessToken}}"}
-                        :initialEnvironments     {:base            {:id        "default_environment"
-                                                                    :title     "Default environmnet"
-                                                                    :variables {:API_ENDPOINT "http://localhost:8000"}}
-                                                  :subEnvironments [{:id        "prod_environment"
-                                                                     :title     "prod"
-                                                                     :variables {:API_ENDPOINT "https://prod.api.com"}}]}
-                        :initialPreRequestScript "console.log(\"initialPreRequestScript\");"}})
+(wrap-altair {:url                     "/altair"
+              :initialName             "My Altair"
+              :endpointURL             "{{API_ENDPOINT}}/graphql"
+              :initialHeaders          {:Authorization "Bearer {{accessToken}}"}
+              :initialEnvironments     {:base            {:id        "default_environment"
+                                                          :title     "Default environmnet"
+                                                          :variables {:API_ENDPOINT "http://localhost:8000"}}
+                                        :subEnvironments [{:id        "prod_environment"
+                                                            :title     "prod"
+                                                            :variables {:API_ENDPOINT "https://prod.api.com"}}]}
+              :initialPreRequestScript "console.log(\"initialPreRequestScript\");"})
 ```
