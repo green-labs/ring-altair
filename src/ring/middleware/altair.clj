@@ -24,6 +24,10 @@
       (let [root-path (string/replace-first uri #(re-pattern url) "")]
         (resource-request (assoc request :uri root-path) "/altair")))))
 
+(defn altair-handler [{:keys [_url _options] :as options}]
+  (fn [request]
+    (altair-request request options)))
+
 (defn wrap-altair [_next-handler {:keys [url options]}]
   (fn [request]
     (let [uri (:uri request)
